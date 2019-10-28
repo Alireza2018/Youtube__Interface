@@ -1,0 +1,7 @@
+.menuItem {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #fff;
+    padding: 16px 24px;
+}
