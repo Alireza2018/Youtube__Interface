@@ -3,37 +3,32 @@ import * as types from '../actions/actionTypes'
 
 export default function youtubeReducer(state = initialState.youtube, action) {
     switch(action.type) {
-        case types.FETCH_ALL_CHANNELS_START: 
+        case types.FETCH_CHANNEL_VIDEOS_START: 
             return {
                 ...state,
-                fetchAllStarted: true
+                fetchStarted: true
             }
-        case types.FETCH_ALL_CHANNELS_SUCCESS:
+        case types.FETCH_CHANNEL_VIDEOS_SUCCESS:
             return {
                 ...state,
-                channels: action.data,
-                fetchAllStarted: false,
-                fetchAllSuccess: true
-            }
-        case types.FETCH_ALL_CHANNELS_ERROR: 
-            return {
-                ...state,
-                fetchAllError: true
-            }
-        case types.FETCH_YOUTUBE_CHANNEL_INFO_START:
-            return {
-                ...state
-            }
-        case types.FETCH_YOUTUBE_CHANNEL_INFO_SUCCESS:
-            console.log(action)
-            return {
-                ...state,
-                videos: state.videos.concat({channelId: action.data.channelId, items: action.data.items}),
+                selectedChannels: state.selectedChannels.concat(action.data),
                 fetchedChannels: state.fetchedChannels.concat(action.data.channelId)
             }
-        case types.FETCH_YOUTUBE_CHANNEL_INFO_ERROR:
+        case types.FETCH_CHANNEL_VIDEOS_ERROR:
             return {
-                ...state
+                ...state,
+                error: action.error
+            }
+        //LOCAL STATE
+        case types.CHANNEL_IS_DESELECTED:
+            return {
+                ...state,
+                removedChannels: action.channel
+            }
+        case types.CHANNEL_IS_RESELECTED: 
+            return {
+                ...state,
+                selectedChannels: state.selectedChannels.concat(action.data)
             }
         default:
             return state

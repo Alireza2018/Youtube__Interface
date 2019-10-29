@@ -12,8 +12,9 @@ const Checkbox = props => {
 
     return (
         <label className={styles.checkBox}>
+            {label}
             <input type="checkbox" {...rest}/>
-            <span>{label}</span>
+            <span className={styles.checkMark}/>
         </label>
         
     )

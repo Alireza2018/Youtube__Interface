@@ -2,4 +2,5 @@
     height: 100vh;
     width: calc(100vw - 350px);
     padding: 16px 24px;
+    background-color: #fafbfc;
 }
