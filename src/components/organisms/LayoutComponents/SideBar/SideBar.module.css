@@ -1,0 +1,21 @@
+.root {
+    height: 100vh;
+    width: 350px;
+    padding: 16px 24px;
+    /* background-color: #282c34; */
+    background-color: #323232;
+}
+
+.root > h3 {
+    color: #fff;
+    border-radius: 4px;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.root > h3 > span {
+    display: inherit;
+    transition: transform 0.5
+}

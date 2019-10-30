@@ -1,0 +1,16 @@
+.movieCard {
+    display: block;
+    background-color: #494949;
+    border-radius: 8px;
+    color: #fff;
+    padding: 8px;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    font: 400 13.3333px Arial;
+}

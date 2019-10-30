@@ -1,6 +1,6 @@
 import React from 'react'
 
-import MenuItem from '../../atoms/MenuItem'
+import MenuItem from '../../molecules/MenuItem'
 import Checkbox from '../../atoms/Chekbox'
 import Button from '../../atoms/Button'
 
@@ -20,15 +20,12 @@ class ChannelsList extends React.Component  {
         const val = event.target.checked
         const name = event.target.name
         let updatedList = Object.assign({}, this.state.selectedChannels, {[name]: val})
-        this.setState(
-            { selectedChannels: updatedList },
-            //() => this.props.onItemClick(this.state.selectedChannels, name)
-        )
+        this.setState({ selectedChannels: updatedList })
     }
 
     handleSubmit = (event) => {
         event.preventDefault()
-        console.log(this.state.selectedChannels)
+        this.props.onSubmit(this.state.selectedChannels)
     }
 
     render() {

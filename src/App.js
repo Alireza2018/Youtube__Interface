@@ -6,65 +6,94 @@ import { bindActionCreators } from "redux";
 import channels  from './sagas/api/channels'
 
 //Importing redux actions
-import { fetchChannelVideosStart,  deselectChannel, reselectChannel } from './actions/youtubeActions'
+import { fetchVideosStart } from './actions/youtubeActions'
 
 //Importing the app components
-import Layout from './components/organisms/Layout'
-import SideBar from './components/organisms/SideBar'
-import Container from './components/organisms/Container'
-import ChannelsForm from './components/molecules/ChannelsForm'
+import Layout from './components/organisms/LayoutComponents/Layout'
+import SideBar from './components/organisms/LayoutComponents/SideBar'
+import Container from './components/organisms/LayoutComponents/Container'
+import ChannelsForm from './components/organisms/ChannelsForm'
+import VideosList from './components/organisms/VideosList';
+import Player from './components/organisms/Player'
+
+//Import an icon
+import ChevronUp from './components/atoms/SvgIcons/ChevronUp'
+
 
 class App extends React.Component {
 
+  state = {
+    toggle: true,
+    video: null,
+    removedIds: []
+  }
+
+  handleSubmit = (selectedChannels) => {
+    if(Object.keys(selectedChannels).length > 0) {
+      this.setState(
+        {toggle: false},
+        () => this.props.fetchVideosStart(selectedChannels)
+      )
+    }
+  }
+
+  selectVideo = (video) => {
+    this.setState({ video })
+  }
+
+  removeVideo = (video) => {
+    const {youtube} = this.props
+    let index = youtube.videos.indexOf(video)
+    let removed = youtube.videos.splice(index, 1)
+    let removedIds = Object.assign([], this.state.removedIds)
+    removed.map( r => { removedIds.push(r.videoId) })
+    this.setState({ removedIds })
+
+    console.log(youtube.videos, 'redux list')
+    console.log(removed, 'removed list')
+    console.log(removedIds, 'removedIds')
+  }
+
+  toggleChannels = () => {
+    this.setState(prevState => ({toggle: !prevState.toggle}))
+  }
+
   render() {
     const {youtube} = this.props
+    const {toggle, video, removedIds} = this.state
     return (
       <Layout>
         <SideBar>
-          <h3>Tilgjengelige kanaler</h3>
-          <ChannelsForm 
-            channels={channels} 
-            onItemClick={this.handleChannelClick}
-          />
+          <h3>
+            Tilgjengelige kanaler
+            <span 
+              onClick={this.toggleChannels}
+              style={!toggle ? {transform: 'rotate(180deg)'} : null}
+            > 
+              <ChevronUp color="#fff"/>
+            </span>
+          </h3>
+          
+          <div style={!toggle ? {display: 'none'} : {display: 'block'}}>
+              <ChannelsForm 
+                channels={channels} 
+                onSubmit={this.handleSubmit}
+              />
+          </div>
+          
           <h3>Videoliste</h3>
+          <VideosList
+            videos={youtube.videos}
+            removedIds={removedIds}
+            onSelectItem={this.selectVideo}
+            onRemoveItem={this.removeVideo}
+          />
         </SideBar>
         <Container>
-          
+          <Player {...video}/>
         </Container>
       </Layout>
     );
-  }
-
-  //Redux Connected Functions
-  handleChannelClick = (selectedChannels, channelId) => {
-    console.log(selectedChannels)
-    const {youtube} = this.props
-    if(youtube.fetchedChannels.indexOf(channelId) === -1) {
-      //We check if the channel has been selected or not, if no, 
-      //then we should fetch the videos inside the channel
-      console.log('first select')
-      this.props.fetchChannelVideosStart(channelId)
-    }
-    else if(selectedChannels[channelId]) {
-      //Here the channel has already been selected and user wants to reselect it
-      //We do not need to execute an api call for it. We already have the channel videos.
-      //We add the videos associated to this channelId from the list of videos
-      console.log('reselect')
-      let reselected = youtube.removedVideos.find( video => {return video.channelId})
-      this.props.reselectChannel(reselected)
-    }
-    else if(!selectedChannels[channelId]) {
-      //Here the channel has already been selected and user wants to deselect it
-      //We do not need to execute an api call for it. We already have the channel videos.
-      //We remove the videos associated to this channelId to the list of videos.
-      console.log('deselect')
-      let index = youtube.selectedChannels.map( (video, idx) => {
-        if(video.channelId === channelId) {
-          return idx
-        }
-      })
-      this.props.deselectChannel(youtube.selectedChannels.splice(index, 1))
-    }
   }
 }
 
@@ -78,9 +107,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      fetchChannelVideosStart,
-      deselectChannel,
-      reselectChannel
+      fetchVideosStart
     },
     dispatch
   );

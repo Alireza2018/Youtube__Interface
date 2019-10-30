@@ -8,6 +8,7 @@
     padding-left: 35px;
     color: #c9c9c9;
     font-weight: 700;
+    text-align: left;
 }
 
 .checkBox input[type="checkbox"] {
