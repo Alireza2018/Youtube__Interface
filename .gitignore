@@ -2,7 +2,6 @@
 
 # dependencies
 /node_modules
-/src/sagas/api/apiKey.js
 /.pnp
 .pnp.js
 

@@ -22,7 +22,8 @@ const Button = props => {
 }
 
 Button.propTypes = {
-    simple: PropTypes.bool
+    simple: PropTypes.bool,
+    style: PropTypes.object
 }
 
 export default Button

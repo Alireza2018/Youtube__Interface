@@ -1,3 +1,4 @@
+//The array that contains channels data 
 const channels = [
     {
         title: 'Late Night with Seth Myers',

@@ -1,4 +1,5 @@
 import React from 'react' 
+import PropTypes from "prop-types"
 
 import '../iconStyles.css'
 
@@ -21,5 +22,8 @@ const ChevronUp = ({color, ...props}) => {
     )
 }
 
+ChevronUp.propTypes = {
+    color: PropTypes.string
+}
 
 export default ChevronUp

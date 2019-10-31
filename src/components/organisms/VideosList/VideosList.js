@@ -17,22 +17,18 @@ const VideosList = props => {
         onRemoveItem
     } = props
 
-    const itemClick = (video) => {
-        onSelectItem(video)
-    }
-
-    const removeItem = (video) => {
-        onRemoveItem(video)
-        console.log('remove movie')
-    }
-
+    //Pass on the selected video to the parent component, It will be feeded to the palyer component
+    const itemClick = (video) => { onSelectItem(video) }
+    //Pass on the vido to the parent component to be removed from the list of videos
+    const removeItem = (video) => { onRemoveItem(video) }
     return(
-        <>
+        <div className={styles.root}>
             {
                 videos.map( (video, idx) => {
                     return(
                         <>
                             {
+                                //Here I check if the video was removed from the list or not
                                 (removedIds.indexOf(video.videoId) === -1) && (
                                     <MenuItem 
                                         key={idx} 
@@ -61,7 +57,7 @@ const VideosList = props => {
                     )
                 })
             }
-        </>
+        </div>
     )
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-
+import PropTypes from "prop-types"
 
 import styles from './Checkbox.module.css'
 
@@ -18,6 +18,10 @@ const Checkbox = props => {
         </label>
         
     )
+}
+
+Checkbox.propTypes = {
+    label: PropTypes.string.isRequired
 }
 
 export default Checkbox

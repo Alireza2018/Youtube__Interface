@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from "prop-types"
-import YouTube from 'react-youtube'
+import YouTube from 'react-youtube' //npm module that plays the youtube video
 
-import { WATCH_URL } from '../../../sagas/api/apiUrl'
-import TitleBar from '../../molecules/TitleBar'
+import TitleBar from '../../molecules/TitleBar' //This component will display the channel & video tilte of the currently playing video
 
 import styles from './Player.module.css'
 
@@ -13,6 +12,7 @@ const Player = props => {
         channelTitle,
         title,
         videoId,
+        removedId,
         ...rest
     } = props
 
@@ -24,20 +24,24 @@ const Player = props => {
         }
     }
 
-    const videoInfo = {channelTitle: channelTitle, title: title}
+    //If the currently being played video is removed from the list, I also remove it from the player component
+    const videoInfo = (videoId !== removedId) ? {channelTitle: channelTitle, title: title} : {}
         
     return(
         <>
             <TitleBar {...videoInfo}/>
             <div className={styles.videoContainer}>
                 {
-                    (videoId !== undefined) ?
-                        <YouTube
-                            videoId={videoId}
-                            opts={opts}
-                        />
+                    (videoId !== undefined && videoId !== removedId) ?
+                        <>
+                            <YouTube
+                                videoId={videoId}
+                                opts={opts}
+                            />
+                        </>
                     :
                         <div className={styles.content}>
+                            <h3>Youtube Grensesnittoppgave</h3>
                         </div>
                 }
             </div>
@@ -55,7 +59,8 @@ Player.defaultProps = {
 Player.propTypes = {
     channelTitle: PropTypes.string,
     title: PropTypes.string,
-    videoId: PropTypes.string
+    videoId: PropTypes.string,
+    removedId: PropTypes.string
 }
 
 export default Player
